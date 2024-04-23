@@ -4,17 +4,231 @@
 //
 
 #include <iostream>
+#include <string>
+using namespace std;
 
-// Ваші файли загловки 
-//
-#include "Lab6Example.h"
-int main()
-{
-    std::cout << " Lab #6  !\n";
-    //  Код виконання завдань
-    //  Головне меню завдань
-    //  Функції та класи можуть знаходитись в інших файлах проекту
 
-    Example();
+// Task 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Базовий клас з віртуальним успадкуванням
+class BaseVirtual {
+public:
+    int a;
+    virtual void foo() {}
+};
+
+// Базовий клас без віртуального успадкування
+class BaseNonVirtual {
+public:
+    int b;
+};
+
+// Клас, який успадковує BaseVirtual
+class DerivedVirtual : public BaseVirtual {
+public:
+    int c;
+};
+
+// Клас, який успадковує BaseNonVirtual
+class DerivedNonVirtual : public BaseNonVirtual {
+public:
+    int d;
+};
+
+void Task1() {
+    BaseVirtual baseVirtual;
+    DerivedVirtual derivedVirtual;
+    BaseNonVirtual baseNonVirtual;
+    DerivedNonVirtual derivedNonVirtual;
+
+    cout << "Size of BaseVirtual object: " << sizeof(baseVirtual) << endl;
+    cout << "Size of DerivedVirtual object: " << sizeof(derivedVirtual) << endl;
+    cout << "Size of BaseNonVirtual object: " << sizeof(baseNonVirtual) << endl;
+    cout << "Size of DerivedNonVirtual object: " << sizeof(derivedNonVirtual) << endl;
+}
+
+
+
+
+// Task 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Абстрактний базовий клас чотирикутник
+class Quadrilateral {
+public:
+    // Віртуальна функція для обчислення площі
+    virtual double calculateArea() const = 0;
+
+    // Віртуальна функція для обчислення периметру
+    virtual double calculatePerimeter() const = 0;
+};
+
+// Клас квадрат
+class Square : public Quadrilateral {
+private:
+    double side; // Сторона квадрата
+
+public:
+    // Конструктор
+    Square(double s) : side(s) {}
+
+    // Реалізація віртуальної функції для обчислення площі
+    double calculateArea() const override {
+        return side * side;
+    }
+
+    // Реалізація віртуальної функції для обчислення периметру
+    double calculatePerimeter() const override {
+        return 4 * side;
+    }
+};
+
+// Клас прямокутник
+class Rectangle : public Quadrilateral {
+private:
+    double length; // Довжина прямокутника
+    double width;  // Ширина прямокутника
+
+public:
+    // Конструктор
+    Rectangle(double l, double w) : length(l), width(w) {}
+
+    // Реалізація віртуальної функції для обчислення площі
+    double calculateArea() const override {
+        return length * width;
+    }
+
+    // Реалізація віртуальної функції для обчислення периметру
+    double calculatePerimeter() const override {
+        return 2 * (length + width);
+    }
+};
+
+// Аналогічно для класів Parallelogram і Trapezoid
+
+void Task2() {
+    // Створення об'єктів
+    Square square(5);
+    Rectangle rectangle(4, 6);
+
+    // Виведення площі та периметру квадрата
+    cout << "Квадрат:" << endl;
+    cout << "Площа: " << square.calculateArea() << endl;
+    cout << "Периметр: " << square.calculatePerimeter() << endl;
+
+    // Виведення площі та периметру прямокутника
+    cout << "\nПрямокутник:" << endl;
+    cout << "Площа: " << rectangle.calculateArea() << endl;
+    cout << "Периметр: " << rectangle.calculatePerimeter() << endl;
+
+
+}
+
+
+
+
+// Task 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Батьківський клас "Людина"
+class Person {
+protected:
+    string name;
+
+public:
+    Person(const string& n) : name(n) {}
+
+    virtual ~Person() {}
+
+    virtual void displayInfo() const {
+        cout << "Name: " << name << endl;
+    }
+};
+
+// Клас "Батько", що успадковується від "Людини"
+class Father : public Person {
+protected:
+    int age;
+
+public:
+    Father(const string& n, int a) : Person(n), age(a) {}
+
+    virtual ~Father() {}
+
+    virtual void displayInfo() const override {
+        cout << "I'мя: " << name << ", Вiк: " << age << endl;
+    }
+};
+
+// Клас "Мати", що успадковується від "Людини"
+class Mother : public Person {
+protected:
+    string occupation;
+
+public:
+    Mother(const string& n, const string& occ) : Person(n), occupation(occ) {}
+
+    virtual ~Mother() {}
+
+    virtual void displayInfo() const override {
+        cout << "I'мя: " << name << ", Рiд занять: " << occupation << endl;
+    }
+};
+
+// Клас "Дочка", що успадковується від "Батька" та "Матері"
+class Daughter : public Father, public Mother {
+public:
+    //Daughter(const string& n, int a, const string& occ) : Father(n, a), Mother(n, occ), Person(n) {}
+
+    virtual ~Daughter() {}
+
+    virtual void displayInfo() const override {
+        cout << "Daughter's Name: " << Father::name << ", Вiк: " << Father::age << ", Рiд занять: " << Mother::occupation << endl;
+    }
+};
+
+void Task3() {
+    Father father("Вячеслав", 45);
+    Mother mother("Наталя", "Пекар");
+    //Daughter daughter("Марта", 15, "Школяр");
+
+    cout << "Тато: " << endl;
+    father.displayInfo();
+
+    cout << "\nМама: " << endl;
+    mother.displayInfo();
+
+    //cout << "\nDaughter's Info: " << endl;
+    //daughter.displayInfo();
+
+}
+
+
+
+void main() {
+    int TaskN;
+    setlocale(LC_CTYPE, "ukr");
+
+
+    do {
+        cout << "\n\nВведiть свiй вибiр: ";
+        cin >> TaskN;
+
+        switch (TaskN) {
+        case 1:
+            Task1();
+            break;
+        case 2:
+            Task2();
+            break;
+        case 3:
+            Task3();
+            break;
+        case 0:
+            cout << "Вихiд з програми\n";
+            break;
+        default:
+            cout << "Невiрний вибiр! Будь ласка, введiть число вiд 0 до 3.\n";
+        }
+    } while (TaskN != 0);
+
 
 }
